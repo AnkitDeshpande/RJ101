@@ -1,0 +1,53 @@
+Static and non-static variables, also known as instance variables, are two types of variables in object-oriented programming that serve different purposes. Here's a breakdown of the key differences between static and non-static variables:
+
+1. Scope:
+
+   - Static Variables:
+     - Static variables are also known as class variables because they are associated with the class itself rather than with instances (objects) of the class.
+     - They are shared among all instances of the class and can be accessed using the class name.
+
+   - Non-Static Variables (Instance Variables):
+     - Non-static variables are specific to individual instances (objects) of the class.
+     - Each instance of the class has its own copy of non-static variables, and they are accessed through the object.
+
+2. Memory Allocation:
+
+   - Static Variables:
+     - Memory for static variables is allocated only once, when the class is loaded into memory.
+     - They exist throughout the lifetime of the program and retain their values across multiple instances.
+
+   - Non-Static Variables:
+     - Memory for non-static variables is allocated separately for each instance of the class when an object is created.
+     - Each object has its own set of non-static variables with potentially different values.
+
+3. Access:
+
+   - Static Variables:
+     - They can be accessed using the class name, e.g., `ClassName.staticVariable`.
+     - You don't need an instance of the class to access static variables.
+
+   - Non-Static Variables:
+     - They are accessed through instances (objects) of the class, e.g., `object.nonStaticVariable`.
+     - You must create an object of the class to access non-static variables.
+
+4. Initialization:
+
+   - Static Variables:
+     - They are typically initialized when they are declared or within a static block in the class.
+     - Initialization may involve values common to all instances.
+
+   - Non-Static Variables:
+     - They are often initialized within constructors or through setter methods for each instance.
+     - Initialization may involve values specific to each instance.
+
+5. Use Cases:
+
+   - Static Variables:
+     - Used for values or properties that are shared across all instances of a class, such as constants or counters.
+     - Examples include keeping track of the number of instances created (counters) or defining constants like π (Math.PI).
+
+   - Non-Static Variables:
+     - Used for properties that vary from one instance to another, representing the state or characteristics of individual objects.
+     - Examples include attributes like name, age, or any unique properties of instances.
+
+In summary, static variables are shared among all instances of a class and are associated with the class itself, while non-static (instance) variables are specific to each individual object and vary from one instance to another. The choice between static and non-static variables depends on the design and requirements of your program.
