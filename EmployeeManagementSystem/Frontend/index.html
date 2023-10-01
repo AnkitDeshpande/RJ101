@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Employee Management System</title>
+        <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    </head>
+    <body>
+        <div class="container mt-5">
+            <h1>Employee Management System</h1>
+
+            <!-- Add Employee Form -->
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>Add Employee</h2>
+                    <form id="employeeAddForm">
+                        <div class="form-group">
+                            <label for="addFirstName">First Name:</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="addFirstName"
+                                name="firstName"
+                                required />
+                        </div>
+                        <div class="form-group">
+                            <label for="addLastName">Last Name:</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="addLastName"
+                                name="lastName"
+                                required />
+                        </div>
+                        <div class="form-group">
+                            <label for="addEmail">Email:</label>
+                            <input
+                                type="email"
+                                class="form-control"
+                                id="addEmail"
+                                name="email"
+                                required />
+                        </div>
+                        <div class="form-group">
+                            <label for="addDesignation">Designation:</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="addDesignation"
+                                name="designation"
+                                required />
+                        </div>
+                        <div class="form-group">
+                            <label for="addSalary">Salary:</label>
+                            <input
+                                type="number"
+                                class="form-control"
+                                id="addSalary"
+                                name="salary"
+                                required />
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            Add
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Edit Employee Form (Initially hidden) -->
+            <div id="editEmployeeForm" style="display: none">
+                <h2>Edit Employee</h2>
+                <form id="employeeEditForm">
+                    <input type="hidden" id="editEmployeeId" />
+                    <div class="form-group">
+                        <label for="editFirstName">First Name:</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="editFirstName"
+                            name="firstName"
+                            required />
+                    </div>
+                    <div class="form-group">
+                        <label for="editLastName">Last Name:</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="editLastName"
+                            name="lastName"
+                            required />
+                    </div>
+                    <div class="form-group">
+                        <label for="editEmail">Email:</label>
+                        <input
+                            type="email"
+                            class="form-control"
+                            id="editEmail"
+                            name="email"
+                            required />
+                    </div>
+                    <div class="form-group">
+                        <label for="editDesignation">Designation:</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="editDesignation"
+                            name="designation"
+                            required />
+                    </div>
+                    <div class="form-group">
+                        <label for="editSalary">Salary:</label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="editSalary"
+                            name="salary"
+                            required />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        onclick="cancelEdit()">
+                        Cancel
+                    </button>
+                </form>
+            </div>
+
+            <!-- Employee List -->
+            <div class="row mt-5">
+                <div class="col-md-12">
+                    <h2>Employee List</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email</th>
+                                <th>Designation</th>
+                                <th>Salary</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employeeList">
+                            <!-- Employee data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <script>
+            function fetchAndDisplayEmployees() {
+                fetch("http://localhost:8080/api/employees")
+                    .then((response) => response.json())
+                    .then((data) => {
+                        const employeeList =
+                            document.getElementById("employeeList");
+                        employeeList.innerHTML = "";
+
+                        data.forEach((employee) => {
+                            const row = document.createElement("tr");
+                            row.innerHTML = `
+                            <td>${employee.id}</td>
+                            <td>${employee.firstName}</td>
+                            <td>${employee.lastName}</td>
+                            <td>${employee.email}</td>
+                            <td>${employee.designation}</td>
+                            <td>${employee.salary}</td>
+                            <td>
+                                <button class="btn btn-primary" onclick="displayEditForm(${employee.id})">Edit</button>
+                                <button class="btn btn-danger" onclick="deleteEmployee(${employee.id})">Delete</button>
+                            </td>
+                        `;
+                            employeeList.appendChild(row);
+                        });
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching employee data:", error);
+                    });
+            }
+
+            function displayEditForm(employeeId) {
+                fetch(`http://localhost:8080/api/employees/${employeeId}`)
+                    .then((response) => response.json())
+                    .then((employee) => {
+                        const editEmployeeForm =
+                            document.getElementById("editEmployeeForm");
+                        const editEmployeeId =
+                            document.getElementById("editEmployeeId");
+                        const editFirstName =
+                            document.getElementById("editFirstName");
+                        const editLastName =
+                            document.getElementById("editLastName");
+                        const editEmail = document.getElementById("editEmail");
+                        const editDesignation =
+                            document.getElementById("editDesignation");
+                        const editSalary =
+                            document.getElementById("editSalary");
+
+                        editEmployeeId.value = employee.id;
+                        editFirstName.value = employee.firstName;
+                        editLastName.value = employee.lastName;
+                        editEmail.value = employee.email;
+                        editDesignation.value = employee.designation;
+                        editSalary.value = employee.salary;
+                        editEmployeeForm.style.display = "block";
+                        editEmployeeForm.addEventListener(
+                            "submit",
+                            function (event) {
+                                event.preventDefault();
+                                const updatedEmployeeData = {
+                                    id: employee.id,
+                                    firstName: editFirstName.value,
+                                    lastName: editLastName.value,
+                                    email: editEmail.value,
+                                    designation: editDesignation.value,
+                                    salary: parseFloat(editSalary.value),
+                                };
+
+                                fetch(
+                                    `http://localhost:8080/api/employees/${employee.id}`,
+                                    {
+                                        method: "PUT",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                        },
+                                        body: JSON.stringify(
+                                            updatedEmployeeData
+                                        ),
+                                    }
+                                )
+                                    .then((response) => {
+                                        if (response.ok) {
+                                            editEmployeeForm.style.display =
+                                                "none";
+                                            fetchAndDisplayEmployees();
+                                        } else {
+                                            console.error(
+                                                "Failed to update employee."
+                                            );
+                                        }
+                                    })
+                                    .catch((error) => {
+                                        console.error(
+                                            "Error updating employee:",
+                                            error
+                                        );
+                                    });
+                            }
+                        );
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching employee data:", error);
+                    });
+            }
+
+            function cancelEdit() {
+                const editEmployeeForm =
+                    document.getElementById("editEmployeeForm");
+                editEmployeeForm.style.display = "none";
+            }
+
+            document
+                .getElementById("employeeAddForm")
+                .addEventListener("submit", function (event) {
+                    event.preventDefault();
+                    const newEmployeeData = {
+                        firstName:
+                            document.getElementById("addFirstName").value,
+                        lastName: document.getElementById("addLastName").value,
+                        email: document.getElementById("addEmail").value,
+                        designation:
+                            document.getElementById("addDesignation").value,
+                        salary: parseFloat(
+                            document.getElementById("addSalary").value
+                        ),
+                    };
+
+                    fetch(`http://localhost:8080/api/employees`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(newEmployeeData),
+                    })
+                        .then((response) => {
+                            if (response.ok) {
+                                document
+                                    .getElementById("employeeAddForm")
+                                    .reset();
+                                fetchAndDisplayEmployees();
+                            } else {
+                                console.error("Failed to add employee.");
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("Error adding employee:", error);
+                        });
+                });
+
+            fetchAndDisplayEmployees();
+        </script>
+    </body>
+</html>
