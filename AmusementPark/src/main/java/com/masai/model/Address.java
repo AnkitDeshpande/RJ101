@@ -17,7 +17,7 @@ import lombok.Data;
 public class Address {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Integer addressId;
 
 	@NotBlank(message = "City is required.")
 	private String city;
