@@ -28,3 +28,5 @@ predarkestdark.currentIPColor=100,90,110
 predarkestdark.secondaryIPColor=100,90,110
 printMarginColor=208,208,208
 spellingIndicationColor=253,170,211
+tabWidth=13
+undoHistorySize=2000
