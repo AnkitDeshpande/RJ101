@@ -40,4 +40,16 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.NOT_FOUND);
 	}
 
+	@ExceptionHandler(TicketNotFoundException.class)
+	public ResponseEntity<ErrorDetails> cust(TicketNotFoundException ex, WebRequest req) {
+		ErrorDetails ed = new ErrorDetails(req.getDescription(false), ex.getMessage(), LocalDate.now());
+		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(ReviewNotFoundException.class)
+	public ResponseEntity<ErrorDetails> cust(ReviewNotFoundException ex, WebRequest req) {
+		ErrorDetails ed = new ErrorDetails(req.getDescription(false), ex.getMessage(), LocalDate.now());
+		return new ResponseEntity<ErrorDetails>(ed, HttpStatus.NOT_FOUND);
+	}
+
 }

@@ -16,11 +16,18 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "Activities")
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Activity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,14 +51,5 @@ public class Activity {
 	@ManyToOne
 	@JoinColumn(name = "park_id")
 	private Park park;
-
-	public Activity(@NotBlank(message = "Name is required.") String name,
-			@NotBlank(message = "Description is required.") String description,
-			@DecimalMin(value = "0.0", message = "Ticket price must be a non-negative value.") double price) {
-		super();
-		this.name = name;
-		this.description = description;
-		this.price = price;
-	}
 
 }

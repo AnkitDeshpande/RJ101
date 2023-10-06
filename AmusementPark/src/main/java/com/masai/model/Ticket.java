@@ -13,11 +13,18 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.DecimalMin;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "Tickets")
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Ticket {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,15 +49,6 @@ public class Ticket {
 	@PrePersist
 	protected void onCreate() {
 		purchaseDate = new Date(); // Set the purchaseDate to the current timestamp when the entity is created
-	}
-
-	public Ticket() {
-	}
-
-	public Ticket(User user, Park park, double price) {
-		this.user = user;
-		this.park = park;
-		this.price = price;
 	}
 
 }

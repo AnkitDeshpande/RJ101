@@ -14,11 +14,18 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "Parks")
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Park {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,18 +58,5 @@ public class Park {
 
 	@OneToMany(mappedBy = "park", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Activity> activities = new HashSet<Activity>();
-
-	public Park(@NotBlank(message = "Name is required.") String name,
-			@NotBlank(message = "Location is required.") String location,
-			@NotBlank(message = "Description is required.") @Size(min = 10, message = "Description must be at least 10 characters long.") String description,
-			@NotBlank(message = "Opening hours are required.") String openingHours,
-			@NotBlank(message = "Closing hours are required.") String closingHours) {
-		super();
-		this.name = name;
-		this.location = location;
-		this.description = description;
-		this.openingHours = openingHours;
-		this.closingHours = closingHours;
-	}
 
 }
